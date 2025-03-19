@@ -1,0 +1,21 @@
+{
+	"name": "chat-along-external-server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "npx nodemon ./index.js",
+		"start": "node ./index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"cloudinary": "^2.6.0",
+		"cors": "^2.8.5",
+		"dotenv": "^16.4.7",
+		"express": "^4.21.2",
+		"multer": "^1.4.5-lts.1",
+		"socket.io": "^4.8.1"
+	}
+}

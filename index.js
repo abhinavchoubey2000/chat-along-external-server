@@ -54,6 +54,38 @@ app.post("/upload-to-cloudinary", upload.single("image"), async (req, res) => {
 	}
 });
 
+app.post("/replace-in-cloudinary", upload.single("image"), async (req, res) => {
+	if (!req.file) {
+		return res
+			.status(400)
+			.json({ success: false, message: "No file uploaded" });
+	}
+	const { publicId } = req.body;
+	if (!publicId) return res.status(400).json({ message: "Public ID required" });
+	try {
+		await cloudinary.uploader
+			.upload_stream(
+				{ public_id: publicId, overwrite: true },
+				(error, result) => {
+					if (error) {
+						return res
+							.status(error.http_code)
+							.json({ success: false, message: error.message });
+					}
+					res.status(200).json({
+						sucess: true,
+						message: "Image replaced successfully",
+						image_url: result.secure_url,
+						public_id: result.public_id,
+					});
+				}
+			)
+			.end(req.file.buffer);
+	} catch (error) {
+		return res.status(400).json({ success: false, message: error.message });
+	}
+});
+
 app.post("/delete-from-cloudinary", async (req, res) => {
 	const { public_id } = req.body;
 	if (!public_id) {
